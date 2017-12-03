@@ -70,7 +70,7 @@ if __name__ == '__main__':
     conn = pymysql.connect(host='127.0.0.1',
                            port=3306,
                            user='root',
-                           passwd='jiangyan1921',
+                           passwd='****************',
                            db='user',
                            charset='utf8',
                            cursorclass=pymysql.cursors.DictCursor)
