@@ -33,11 +33,15 @@ class SignHandler(web.RequestHandler):
         # 判断信息是否完整
         if netacc and netname and passwdtwo and passwdone and sex and phone:
             if passwdone and passwdtwo:
-                cursor.execute()
+                # 将用户注册信息添加到数据库
+                cursor.execute('insert into uesr(netacc, netname, passwd, phone ,sex) value({},{},{},{},{})'
+                               .format(netacc, netname, passwdone, str(phone), sex))
+                conn.commit()
+                print("注册成功")
             else:
-                self.write('两次输入的密码不一样！')
+                self.write('两次输入的密码不一样！请重试')
         else:
-            print('请将信息填写完整！')
+            self.write('请将信息填写完整！')
 
 # 路由 登陆界面
 class loginHandler(web.RequestHandler):
@@ -50,9 +54,11 @@ class loginHandler(web.RequestHandler):
         passwd = self.get_argument('passwd')
         # 进行判断
         if netacc and passwd:
-            print(netacc, passwd)
+            cursor.execute('select * from uesr')
+            results = cursor.fetchall()
+            print(results)
         else:
-            self.write('请检查账号或密码是否正确！')
+            self.write('请将信息填写完整！')
 
 #路由注册
 application = web.Application([(r'/index', MainPageHandler),
@@ -61,18 +67,19 @@ application = web.Application([(r'/index', MainPageHandler),
 
 
 if __name__ == '__main__':
+    conn = pymysql.connect(host='127.0.0.1',
+                           port=3306,
+                           user='root',
+                           passwd='**************',
+                           db='music',
+                           charset='utf8',
+                           cursorclass=pymysql.cursors.DictCursor)
+    # 创建游标
+    cursor = conn.cursor()
     # 启动服务
     http_server = httpserver.HTTPServer(application)
     # 端口监听
     http_server.listen(8080)
     ioloop.IOLoop.current().start()
     # 链接数据库
-    conn = pymysql.connect(host='127.0.0.1',
-                           port=3306,
-                           user='root',
-                           passwd='jiangyan1921',
-                           db='user',
-                           charset='utf8',
-                           cursorclass=pymysql.cursors.DictCursor)
-    # 创建游标
-    cursor = conn.cursor()
+
