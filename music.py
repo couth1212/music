@@ -10,7 +10,6 @@
 import requests
 import pymysql
 import re
-import urllib
 
 
 def main():
