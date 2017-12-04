@@ -23,7 +23,7 @@ def main():
     cursor.close()
     conn.close()
 
-
+# 获得网页内容
 def gethtml(url):
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'}
     html = requests.get(url, headers=headers)
@@ -34,11 +34,13 @@ def gethtml(url):
     
 
 def getcontent(html):
+    # 正则表达式
     tag_title = r'<span class="title"><a href=".*?" target="play" title=".*?" sid=".*?">(.*?)</a></span>'
     tag_href = r'<span class="title"><a href="(.*?)" target="play" title=".*?" sid=".*?">.*?</a></span>'
     tag_author = r'<span class="artistName"><a href=".*?" title=".*?" target="_blank">(.*?)</a></span>'
     tag_musictype = r'<span class="albumName"><a href=".*?" title=".*?" target="_blank">(.*?)</a></span>'
     tag_inq = r'<span class="playCount">(.*?)</span>'
+    # 开始正则匹配并将获得的内容保存到数据库
     for x in html:
         title = re.findall(tag_title, x)
         href1 = re.findall(tag_href, x)
@@ -47,18 +49,21 @@ def getcontent(html):
         inq1 = re.findall(tag_inq, x)
         href = 'http://f1.htqyy.com{}/mp3/18'.format(str(href1[0]))
         inq = re.findall(r'\d*', inq1[0])
+        # 添加到数据库
         cursor.execute('insert into music(title, href, author, musictype, inq) value("{}", "{}", "{}", "{}", "{}")'.format(
             title[0], href, author[0], musictype[0], int(inq[0])))
         conn.commit()
         print('正在添加---> ', title[0], href, author[0], musictype[0], str(inq[0]))
 
 if __name__ == '__main__':
+    # 链接数据库
     conn = pymysql.connect(host='127.0.0.1',
                            port=3306,
                            user='root',
-                           passwd='************',
+                           passwd='*************',
                            db='music',
                            charset='utf8')
+    # 创建游标
     cursor = conn.cursor()
     conn.commit()
     print("链接成功")
