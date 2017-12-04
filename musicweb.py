@@ -33,11 +33,14 @@ class SignHandler(web.RequestHandler):
         # 判断信息是否完整
         if netacc and netname and passwdtwo and passwdone and sex and phone:
             if passwdone and passwdtwo:
-                cursor.execute()
+                cursor.execute('insert into uesr(netacc, netname, passwd, phone, sex) VALUE ({}, {}, {}, {}, {})'
+                               .format(netacc, netname, passwdone, str(phone), sex))
+                conn.commit()
+                self.write('用户注册成功')
             else:
                 self.write('两次输入的密码不一样！')
         else:
-            print('请将信息填写完整！')
+            self.write('请将信息填写完整！')
 
 # 路由 登陆界面
 class loginHandler(web.RequestHandler):
@@ -50,7 +53,9 @@ class loginHandler(web.RequestHandler):
         passwd = self.get_argument('passwd')
         # 进行判断
         if netacc and passwd:
-            print(netacc, passwd)
+            cursor.execute('select * from uesr')
+            results = cursor.fetchall()
+            print(results)
         else:
             self.write('请检查账号或密码是否正确！')
 
@@ -65,7 +70,7 @@ if __name__ == '__main__':
     conn = pymysql.connect(host='127.0.0.1',
                            port=3306,
                            user='root',
-                           passwd='*************',
+                           passwd='************',
                            db='music',
                            charset='utf8',
                            cursorclass=pymysql.cursors.DictCursor)
