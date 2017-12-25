@@ -14,7 +14,7 @@ def connectData():
     return pymysql.connect(host='127.0.0.1',
                            port=3306,
                            user='root',
-                           passwd='jiangyan1921',
+                           passwd='your mysql password',
                            db='music',
                            charset='utf8')
 
@@ -24,7 +24,7 @@ def checkData():
     return pymysql.connect(host='127.0.0.1',
                            port=3306,
                            user='root',
-                           passwd='jiangyan1921',
+                           passwd='your mysql password',
                            db='music',
                            charset='utf8',
                            cursorclass=pymysql.cursors.DictCursor)
