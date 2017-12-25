@@ -8,8 +8,8 @@
 #-------------------------
 
 import requests
-import pymysql
 import re
+from util import database
 
 
 def main():
@@ -34,8 +34,8 @@ def gethtml(url):
 
 def getcontent(html):
     # 正则表达式
-    tag_title = r'<span class="title"><a href=".*?" target="play" title=".*?" sid=".*?">(.*?)</a></span>'
-    tag_href = r'<span class="title"><a href="(.*?)" target="play" title=".*?" sid=".*?">.*?</a></span>'
+    spantag_title = r'<span class="title"><a href=".*?" target="play" title=".*?" sid=".*?">(.*?)</a></span>'
+    tag_href = r'< class="title"><a href="(.*?)" target="play" title=".*?" sid=".*?">.*?</a></span>'
     tag_author = r'<span class="artistName"><a href=".*?" title=".*?" target="_blank">(.*?)</a></span>'
     tag_musictype = r'<span class="albumName"><a href=".*?" title=".*?" target="_blank">(.*?)</a></span>'
     tag_inq = r'<span class="playCount">(.*?)</span>'
@@ -56,12 +56,7 @@ def getcontent(html):
 
 if __name__ == '__main__':
     # 链接数据库
-    conn = pymysql.connect(host='127.0.0.1',
-                           port=3306,
-                           user='root',
-                           passwd='*************',
-                           db='music',
-                           charset='utf8')
+    conn = database.connectData()
     # 创建游标
     cursor = conn.cursor()
     conn.commit()

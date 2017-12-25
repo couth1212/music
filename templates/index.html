@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>胖虎轻音乐</title>
+     <style type="text/css">
+ body{
+	 font-family:"微软雅黑";
+	 width:700px;
+	 margin:0 auto;
+	 text-align:center;
+	 background-image:url(1111.jpg);
+	 padding:10px;}
+#login{
+	height:60px;
+	letter-spacing:0.8em;
+}
+#main{
+	width:700px;
+	margin:0 auto;
+	font-size:18px;
+	}
+ </style> 
 </head>
 <body>
-    <h1 style="color: red" >欢迎来到胖虎轻音乐</h1>
-    <form action="/index" method="get">
-        关键字: <input type="text" name="kw">
-        <input type="submit" value="搜索">
-    </form>
+    <div id="login">
+      <h1 style="color: red" >欢迎来到胖虎轻音乐</h1>
+    </div>
+    <div id="main">
+  <form action="/index" method="get">
+                                        <p>关键字: <input type="text" name="kw"><input type="submit" value="搜索"></p>
+  </form>
+  </div>
 </body>
 </html>
